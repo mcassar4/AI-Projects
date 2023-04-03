@@ -1,0 +1,7 @@
+### Project Name: Constraint Satisfaction Problems (CSPs) in Python
+
+### Project Description
+In this project, I implemented Python functions to solve a Constraint Satisfaction Problem (CSP) that corresponds to the Soduku-like game KenKen. Specifically, I implemented two constraint propagators - a Forward Checking (FC) propagator and a Generalized Arc Consistence (GAC) propagator. Additionally, I implemented two variable ordering heuristics - Minimum-Remaining-Value (MRV) and Degree heuristic (DH). These propagators and heuristics were applied to solve three different CSP models using three different constraint types - binary not-equal, n-ary all-different, and cage. The three models were binary grid-only Cagey, n-ary grid-only Cagey, and full Cagey. The Cagey models took as input a valid Cagey grid, which is a formatted list of elements, and returned a CSP object, and a list of solutions.
+
+### Skills Demonstrated
+I demonstrated the ability to implement constraint propagators, variable ordering heuristics, and CSP models using Python. Specifically, I demonstrated proficiency in implementing FC and GAC propagators and MRV and DH heuristics. Additionally, I demonstrated the ability to build CSP models using different constraint types, such as binary not-equal, n-ary all-different, and cage. I also demonstrated the ability to manipulate and use the CSP object, access its variables and constraints, and use the provided methods in cspbase.py. Finally, I demonstrated the ability to debug and test my code using the provided input/output specifications.

@@ -1,0 +1,7 @@
+### Project Name: PDDL Modelling System Implementation for the Treasure Hunter
+
+### Project Description
+This project involves implementing a domain in PDDL, along with several problems that fall within the domain. The domain, called "The Treasure Hunter," is a dungeon containing rooms, corridors, and various types of keys that the hero can use to unlock corridors. The hero can perform actions like moving to adjacent rooms, unlocking corridors, picking up and dropping keys, and cleaning up messy rooms. The project requires understanding the domain and implementing the predicates, action preconditions/effects, initial state, and goal state for both the domain and the problem files.
+
+### Skills Demonstrated
+The project demonstrates my skills in PDDL modelling, including understanding the domain and implementing predicates, action preconditions/effects, initial state, and goal state. It also requires problem-solving and critical thinking skills to create custom problem instances with specific properties, such as a locked corridor of every color, a minimum number of move actions required, and a specific number of rooms. The project also involves attention to detail, as a misunderstanding of the domain can lead to significant errors in the implementation. Finally, the project requires programming skills to implement the domain and problem files using the PDDL modelling system.
