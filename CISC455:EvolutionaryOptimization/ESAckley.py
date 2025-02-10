@@ -202,3 +202,33 @@ class EvolutionStrategy:
         return best_agent.position, best_agent.fitness, self.trajectory
 
 # ------------------------------------------------------------------------------------------------
+
+def main():
+    """Entry point for the optimization process."""
+    # Define problem dimension and corresponding search space bounds.
+    agent_num_genes = 2
+    search_space_bounds = [(-30, 30) for _ in range(agent_num_genes)]
+    
+    # Instantiate the EvolutionStrategy with the desired parameters.
+    es = EvolutionStrategy(
+        search_space_bounds=search_space_bounds,
+        agent_num_genes=agent_num_genes,
+        population_size=10,
+        num_offspring=20,               # Ensure num_offspring >= population_size for comma selection.
+        selection_strategy="plus"       # Change to "comma" for comma selection strategy.
+    )
+    
+    # Run the optimization process.
+    best_solution, best_fitness, trajectory = es.run()
+
+    # Output best solution found.
+    print(f"Best solution: {best_solution}")
+    print(f"Best fitness: {best_fitness}")
+
+    # Plot results if Ackley is active and the problem is 2D.
+    if ACKLEY:
+        plot_ackley(search_space_bounds=search_space_bounds, trajectory=trajectory)
+
+
+if __name__ == '__main__':
+    main()
