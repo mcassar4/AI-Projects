@@ -16,3 +16,18 @@ Additional checks are included to avoid pitfalls such as having too few offsprin
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+
+# Global flag to control whether Ackley-related functions are active.
+ACKLEY = True
+
+if ACKLEY:
+    # The Ackley function is a widely-used benchmark in optimization.
+    def ackley(x, a=20, b=0.2, c=2 * np.pi):
+        """Computes the Ackley function."""
+        n = len(x)
+        sum_sq = np.sum(x ** 2)
+        sum_cos = np.sum(np.cos(c * x))
+        term1 = -a * np.exp(-b * np.sqrt(sum_sq / n))
+        term2 = -np.exp(sum_cos / n)
+        return term1 + term2 + a + np.exp(1)
+    
