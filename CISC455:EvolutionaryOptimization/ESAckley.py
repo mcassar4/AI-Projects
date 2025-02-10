@@ -141,3 +141,23 @@ class EvolutionStrategy:
         self.learning_rate = 1 / np.sqrt(agent_num_genes)  # Adaptation rate for mutation step-size.
         if ACKLEY:
             self.trajectory = []  # Stores the trajectory of the best solutions.
+
+    def run(self):
+        """Runs the evolutionary process until the evaluation limit is reached."""
+        eval_count = 0
+        while eval_count < self.max_evals:
+            offspring = self.population.generate_offspring(self.num_offspring, self.learning_rate, self.sigma_bound)
+            eval_count += self.num_offspring  # Update evaluation count.
+            
+            # Select survivors based on chosen selection strategy.
+            self.population.select_survivors(offspring, self.population_size, self.selection_strategy)
+            best_agent, best_agent_fitness = self.population.get_best_agent()
+            if ACKLEY:
+                self.trajectory.append((best_agent.position, best_agent_fitness))
+
+            # Log the current generation's progress.
+            print(f"Eval count: {eval_count}, Best fitness: {best_agent.fitness}, Best solution: {best_agent.position}")
+
+        return best_agent.position, best_agent.fitness, self.trajectory
+
+# ------------------------------------------------------------------------------------------------
