@@ -31,6 +31,47 @@ if ACKLEY:
         term2 = -np.exp(sum_cos / n)
         return term1 + term2 + a + np.exp(1)
     
+    def plot_ackley(search_space_bounds, trajectory):
+        """Plots the Ackley function landscape and the optimization trajectory if in 2D.
+        
+        This function creates a 3D surface plot of the Ackley function using the provided bounds.
+        It then animates the trajectory of the best solution.
+        """
+        # Ensure that plotting is only done for 2D problems.
+        if not trajectory or len(trajectory[0][0]) != 2:
+            print("Plotting supports only 2-dimensional problems.")
+            return
+
+        # Generate grid data based on bounds for the first two dimensions.
+        x = np.linspace(search_space_bounds[0][0], search_space_bounds[0][1], 80)
+        y = np.linspace(search_space_bounds[1][0], search_space_bounds[1][1], 80)
+        X, Y = np.meshgrid(x, y)
+        Z = np.array([[ackley(np.array([xi, yi])) for xi, yi in zip(x_row, y_row)] for x_row, y_row in zip(X, Y)])
+
+        # Create a figure and 3D axis.
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        ax.plot_surface(X, Y, Z, cmap='jet', alpha=0.7)
+
+        # If there is recorded trajectory data, animate the best solution path.
+        if trajectory:
+            trajectory_positions = np.array([t[0] for t in trajectory])  # Extract positions.
+            trajectory_fitness = np.array([ackley(pos) for pos in trajectory_positions])
+
+            scatter, = ax.plot([], [], [], color='r', marker='o', markersize=8, label="Best Solution")
+
+            def update(frame):
+                # Update the scatter plot with the best solution so far.
+                scatter.set_data(trajectory_positions[:frame, 0], trajectory_positions[:frame, 1])
+                scatter.set_3d_properties(trajectory_fitness[:frame])
+                return scatter,
+
+            anim = animation.FuncAnimation(fig, update, frames=len(trajectory), interval=len(trajectory)/2, blit=False)
+
+        plt.title("Ackley Function with Evolutionary Search")
+        plt.legend()
+        plt.show()
+
 # ------------------------------------------------------------------------------------------------
 
 class Agent:
