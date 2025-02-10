@@ -62,3 +62,47 @@ class Agent:
         return mutated_agent
 
 # ------------------------------------------------------------------------------------------------
+
+class Population:
+    """Manages a group of agents and implements offspring generation and selection strategies."""
+    
+    def __init__(self, population_size, search_space_bounds, sigma_init):
+        # Initialize the agent population.
+        self.agents = [Agent(search_space_bounds, sigma_init) for _ in range(population_size)]
+        self.search_space_bounds = search_space_bounds
+        self.sigma_init = sigma_init
+
+    def generate_offspring(self, num_offspring, learning_rate, sigma_bound):
+        """Generates offspring by mutating randomly chosen parent agents."""
+        offspring = []
+        for _ in range(num_offspring):
+            parent = np.random.choice(self.agents)  # Random parent selection.
+            child = parent.mutate(learning_rate, self.search_space_bounds, sigma_bound)
+            offspring.append(child)
+        return offspring
+
+    def select_survivors(self, offspring, population_size, selection_strategy):
+        """
+        Select the next generation based on the given selection strategy.
+        
+        "plus" (μ + λ): Combines current agents with offspring, sorts by fitness, then selects the top individuals.
+        "comma" (μ, λ): Uses only offspring (requires offspring count >= population size).
+        """
+        if selection_strategy.lower() in ["plus", "+"]:
+            combined = self.agents + offspring
+            ordered = sorted(combined, key=lambda agent: agent.fitness)
+            self.agents = ordered[:population_size]
+        elif selection_strategy.lower() in ["comma", ","]:
+            if len(offspring) < population_size:
+                raise ValueError("For comma selection, the number of offspring must be at least the population size.")
+            ordered_offspring = sorted(offspring, key=lambda agent: agent.fitness)
+            self.agents = ordered_offspring[:population_size]
+        else:
+            raise ValueError(f"Unknown selection strategy: {selection_strategy}. Please use 'plus' or 'comma'.")
+
+    def get_best_agent(self):
+        """Returns the agent with the best (lowest) fitness and its fitness value."""
+        best_agent = min(self.agents, key=lambda agent: agent.fitness)
+        return best_agent, best_agent.fitness
+
+# ------------------------------------------------------------------------------------------------
