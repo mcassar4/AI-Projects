@@ -106,3 +106,38 @@ class Population:
         return best_agent, best_agent.fitness
 
 # ------------------------------------------------------------------------------------------------
+# EvolutionStrategy encapsulates the overall optimization process.
+class EvolutionStrategy:
+    """Implements the evolution strategy algorithm and controls the optimization loop."""
+    
+    def __init__(self,
+                 agent_num_genes,          # Number of dimensions for each agent.
+                 search_space_bounds,      # Bounds for each dimension.
+                 population_size=4,
+                 num_offspring=8,         # Number of offspring to generate.
+                 sigma_init=1,
+                 sigma_bound=0.01,
+                 max_evals=250,
+                 selection_strategy="plus" # Selection method: "plus" or "comma".
+                 ):
+        # Ensure that the number of dimensions matches the number of provided bounds.
+        assert agent_num_genes == len(search_space_bounds), "Dimension mismatch between agent_num_genes and search_space_bounds."
+        
+        # For comma selection, ensure there are enough offspring.
+        if selection_strategy.lower() in ["comma", ","] and num_offspring < population_size:
+            raise ValueError("For comma selection, the number of offspring must be at least the population size.")
+
+        # Set initial parameters.
+        self.agent_num_genes = agent_num_genes
+        self.population_size = population_size
+        self.num_offspring = num_offspring
+        self.sigma_init = sigma_init
+        self.search_space_bounds = search_space_bounds
+        self.sigma_bound = sigma_bound
+        self.max_evals = max_evals
+        self.selection_strategy = selection_strategy
+        # Initialize the population of agents.
+        self.population = Population(population_size, search_space_bounds, sigma_init)
+        self.learning_rate = 1 / np.sqrt(agent_num_genes)  # Adaptation rate for mutation step-size.
+        if ACKLEY:
+            self.trajectory = []  # Stores the trajectory of the best solutions.
